@@ -30,6 +30,27 @@ const initGame = (game) => {
     return gameBoard
 }
 
+const getMoves = (game) => {
+    let activeCount = 0;
+    let flagCount = 0;
+    let remaining = (game.yDim * game.xDim)
+    if(game.display[0] !== 'unset'){
+        for(let row = 0; row < game.yDim; row++){
+            for(let col = 0; col < game.xDim; col++){
+                if(game.display[row][col].active){
+                    activeCount++
+                }
+                if(game.display[row][col].flagged){
+                    flagCount++
+                }
+            }
+        }
+    }
+    remaining -= activeCount
+    return [remaining, flagCount]
+}
+
 module.exports = {
-    initGame
+    initGame,
+    getMoves
 }
