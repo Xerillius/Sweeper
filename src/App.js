@@ -3,6 +3,8 @@ import './App.css';
 
 import {GameContext} from './GameContext'
 
+const functions = require('./GameFunctions.js')
+
 function App() {
   const initState = {
     xDim: 10,
@@ -15,6 +17,10 @@ function App() {
   }
 
   const [game, setGame] = useState(initState)
+
+  useEffect(() => {
+    setGame({...game, display: functions.initGame()})
+  }, [])
 
   return (
     <GameContext.Provider value={{game, setGame}}>
