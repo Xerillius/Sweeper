@@ -17,10 +17,25 @@ function App() {
   }
 
   const [game, setGame] = useState(initState)
+  const [stats, setStats] = useState('')
 
   useEffect(() => {
-    setGame({...game, display: functions.initGame()})
+    setGame({...game, display: functions.initGame(game)})
   }, [])
+
+  useEffect(() => {
+    if(game.display[0] === 'unset'){
+      setGame({...game, dead: false, display: functions.initGame(game)})
+    } else {
+      const result = functions.getMoves(game)
+      let remaining = result[0]
+      let flaggedCount = result[1]
+      if(remaining == game.totalMines){
+        setGame({...game, totalMines: 0, win: true})
+      }
+      setStats({remaining: remaining, flaggedCount: flaggedCount})
+    }
+  }, [game])
 
   return (
     <GameContext.Provider value={{game, setGame}}>
