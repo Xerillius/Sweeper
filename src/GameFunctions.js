@@ -72,7 +72,7 @@ const checkAdjacentForBombs = (game, x, y) => {
 }
 
 const revealNeighbors = (game, y, x, tempBoard) => {
-    let repeat = new Set([])
+    let repeat = []
     let nY, nX, adj
     neighbors.forEach(neighbor => {
         nY = neighbor[0] + y
@@ -83,13 +83,12 @@ const revealNeighbors = (game, y, x, tempBoard) => {
                 tempBoard[nY][nX].setAdjacent(adj)
                 tempBoard[nY][nX].setActive()
                 if(adj === 0){
-                    repeat.add([nY,nX])
+                    repeat.push([nY,nX])
                 }
             }
         }
     })
     repeat.forEach(re => {
-        repeat.delete(re)
         tempBoard = revealNeighbors(re[0], re[1], tempBoard)
     })
     return tempBoard
