@@ -71,8 +71,33 @@ const checkAdjacentForBombs = (game, x, y) => {
     return bombCount
 }
 
+const revealNeighbors = (game, y, x, tempBoard) => {
+    let repeat = new Set([])
+    let nY, nX, adj
+    neighbors.forEach(neighbor => {
+        nY = neighbor[0] + y
+        nX = neighbor[1] + x
+        if(nY => 0 && nY < game.yDim && nX >= 0 && nX < game.xDim){
+            if(!tempBoard[nY][nX].active){
+                adj = checkAdjacentForBombs(game, nY,nX)
+                tempBoard[nY][nX].setAdjacent(adj)
+                tempBoard[nY][nX].setActive()
+                if(adj === 0){
+                    repeat.add([nY,nX])
+                }
+            }
+        }
+    })
+    repeat.forEach(re => {
+        repeat.delete(re)
+        tempBoard = revealNeighbors(re[0], re[1], tempBoard)
+    })
+    return tempBoard
+}
+
 module.exports = {
     initGame,
     getMoves,
-    checkAdjacentForBombs
+    checkAdjacentForBombs,
+    revealNeighbors
 }
