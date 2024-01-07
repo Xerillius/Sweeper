@@ -1,5 +1,11 @@
 import {Tile} from './Tile'
 
+const neighbors = [
+    [-1,-1],[-1, 0],[-1, 1],
+    [ 0,-1],        [ 0, 1],
+    [ 1,-1],[ 1, 0],[ 1, 1]
+]
+
 const initGame = (game) => {
     let gameBoard = Array(game.yDim)
     for(let row = 0; row < game.yDim; row++){
@@ -50,7 +56,23 @@ const getMoves = (game) => {
     return [remaining, flagCount]
 }
 
+const checkAdjacentForBombs = (game, x, y) => {
+    let bombCount = 0
+    let nY, nX
+    neighbors.forEach(neighbor => {
+        nY = neighbor[0] + y
+        nX = neighbor[1] + x
+        if(nY >= 0 && nY < game.yDim && nX >= 0 && nX < game.xDim){
+            if(game.display[nY][nX].isBomb){
+                bombCount += 1
+            }
+        }
+    })
+    return bombCount
+}
+
 module.exports = {
     initGame,
-    getMoves
+    getMoves,
+    checkAdjacentForBombs
 }
